@@ -1,7 +1,7 @@
 # Rock-paper-scissors-recognize-and-battle
 石头剪刀布的手势识别和对决（Rock paper scissors recognize and battle）
 
- """
+    """
     Classify hand gesture as Rock, Paper, or Scissors based on finger states.
     landmarks: A list of (x,y,z) for each of the 21 hand landmarks in normalized coordinates.
 
@@ -31,31 +31,39 @@
     #   then it's considered extended. You might need to flip logic depending on which hand and orientation.
 
     """
-根据手指状态将手势分类为石头、剪刀或布。
-landmarks: 一个包含 21 个手部关键点的列表，每个关键点表示为 (x, y, z) 的归一化坐标。
+    根据手指状态将手势分类为石头、剪刀或布。
+    landmarks: 一个包含 21 个手部关键点的列表，每个关键点表示为 (x, y, z) 的归一化坐标。
+    
+    我们将通过比较手指指尖和 DIP 关节的位置来定义哪些手指是“伸展”的：
+    对于每根手指，如果指尖的 y 坐标小于（即高于）PIP（或 DIP）关节的 y 坐标，并且手掌面向正前方，则认为该手指是伸展的。
+    - 食指: 指尖 (8), PIP(6)
+    - 中指: 指尖 (12), PIP(10)
+    - 无名指: 指尖 (16), PIP(14)
+    - 小指: 指尖 (20), PIP(18)
+    - 拇指: 为简化逻辑（假设是右手且手掌面向相机），我们检查拇指指尖 (4) 是否位于 IP 关节 (2) 的左侧。可以根据需要调整逻辑。
+    
+    注意: 这是一种启发式方法，可能需要根据相机方向和手部姿势进行调整。
+    """
+    
+    # 提取相关的关键点索引
+    # 关键点说明:
+    # - 拇指: 指尖 (4), IP(3), MCP(2)
+    # - 食指: 指尖 (8), PIP(6)
+    # - 中指: 指尖 (12), PIP(10)
+    # - 无名指: 指尖 (16), PIP(14)
+    # - 小指: 指尖 (20), PIP(18)
+    
+    # 归一化的假设: 相机方向设定为 y 坐标越低表示手指向上伸展（大致方向）。
+    # 定义手指“伸展”的条件:
+    # - 对于食指/中指/无名指/小指，如果指尖的 y 坐标 < PIP 的 y 坐标，则认为该手指是“伸展”的。
+    # - 对于拇指，我们考虑 x 坐标: 
+    #   如果拇指指尖 (4) 在 MCP (2) 的左侧（假设右手手掌面向相机），则认为拇指是伸展的。
+    #   需要根据使用哪只手和方向翻转逻辑。
 
-我们将通过比较手指指尖和 DIP 关节的位置来定义哪些手指是“伸展”的：
-对于每根手指，如果指尖的 y 坐标小于（即高于）PIP（或 DIP）关节的 y 坐标，并且手掌面向正前方，则认为该手指是伸展的。
-- 食指: 指尖 (8), PIP(6)
-- 中指: 指尖 (12), PIP(10)
-- 无名指: 指尖 (16), PIP(14)
-- 小指: 指尖 (20), PIP(18)
-- 拇指: 为简化逻辑（假设是右手且手掌面向相机），我们检查拇指指尖 (4) 是否位于 IP 关节 (2) 的左侧。可以根据需要调整逻辑。
+![image](https://github.com/motortor/Rock-paper-scissors-recognize-and-battle/blob/main/recognize.png)
+recognize.py: The gestures of both left and right hands can be recognized. If both hands appear simultaneously, priority will be given to recognizing the hand that enters the screen first.
+recognize.py：左右手的手势均可识别，如果两只手同时出现，则优先识别先进入屏幕的那只手。
 
-注意: 这是一种启发式方法，可能需要根据相机方向和手部姿势进行调整。
-"""
-
-# 提取相关的关键点索引
-# 关键点说明:
-# - 拇指: 指尖 (4), IP(3), MCP(2)
-# - 食指: 指尖 (8), PIP(6)
-# - 中指: 指尖 (12), PIP(10)
-# - 无名指: 指尖 (16), PIP(14)
-# - 小指: 指尖 (20), PIP(18)
-
-# 归一化的假设: 相机方向设定为 y 坐标越低表示手指向上伸展（大致方向）。
-# 定义手指“伸展”的条件:
-# - 对于食指/中指/无名指/小指，如果指尖的 y 坐标 < PIP 的 y 坐标，则认为该手指是“伸展”的。
-# - 对于拇指，我们考虑 x 坐标: 
-#   如果拇指指尖 (4) 在 MCP (2) 的左侧（假设右手手掌面向相机），则认为拇指是伸展的。
-#   需要根据使用哪只手和方向翻转逻辑。
+![image](https://github.com/motortor/Rock-paper-scissors-recognize-and-battle/blob/main/battle.png)
+battle.py: Let's have a Rock-Paper-Scissors battle!
+battle.py：来一场石头剪刀布的对决吧！
