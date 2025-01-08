@@ -61,9 +61,13 @@
     #   需要根据使用哪只手和方向翻转逻辑。
 
 ![image](https://github.com/motortor/Rock-paper-scissors-recognize-and-battle/blob/main/recognize.png)
+
 recognize.py: The gestures of both left and right hands can be recognized. If both hands appear simultaneously, priority will be given to recognizing the hand that enters the screen first.
+
 recognize.py：左右手的手势均可识别，如果两只手同时出现，则优先识别先进入屏幕的那只手。
 
 ![image](https://github.com/motortor/Rock-paper-scissors-recognize-and-battle/blob/main/battle.png)
+
 battle.py: Let's have a Rock-Paper-Scissors battle!
+
 battle.py：来一场石头剪刀布的对决吧！
